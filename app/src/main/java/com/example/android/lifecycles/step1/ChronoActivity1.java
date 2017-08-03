@@ -16,6 +16,7 @@
 
 package com.example.android.lifecycles.step1;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Chronometer;
@@ -32,6 +33,17 @@ public class ChronoActivity1 extends AppCompatActivity {
 
         Chronometer chronometer = (Chronometer) findViewById(R.id.chronometer);
 
+        final MyViewModel myViewModel = ViewModelProviders.of(this).get(MyViewModel.class);
+
+        if (myViewModel.getBase() != null) chronometer.setBase(myViewModel.getBase());
+
+        chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                myViewModel.setBase(chronometer.getBase());
+            }
+        });
         chronometer.start();
     }
+
 }
